@@ -1,0 +1,31 @@
+{
+  "name": "image-processing-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "nodemon",
+    "jasmine": "jasmine",
+    "test": "npm run build && npm run jasmine"
+  },
+  "keywords": [],
+  "author": "Ben Harrison",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "express": "^5.2.1",
+    "jasmine": "^6.3.0",
+    "jasmine-spec-reporter": "^7.0.0",
+    "supertest": "^7.2.2"
+  },
+  "devDependencies": {
+    "@tsconfig/node-lts": "^24.0.0",
+    "@types/express": "^5.0.6",
+    "@types/jasmine": "^6.0.0",
+    "@types/node": "^25.9.3",
+    "@types/supertest": "^7.2.0",
+    "nodemon": "^3.1.14",
+    "typescript": "^6.0.3"
+  }
+}

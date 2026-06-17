@@ -1,0 +1,55 @@
+{
+  // Visit https://aka.ms/tsconfig to read more about this file
+  "extends": "@tsconfig/node-lts/tsconfig.json",
+  "compilerOptions": {
+    // File Layout
+    "rootDir": "./src",
+    "outDir": "./dist",
+
+    // Environment Settings
+    // See also https://aka.ms/tsconfig/module
+    // module set in @tsconfig/node-lts/tsconfig.json
+    // "module": "nodenext",
+    // target set in @tsconfig/node-lts/tsconfig.json
+    // "target": "esnext",
+    // For nodejs:
+    // lib set in @tsconfig/node-lts/tsconfig.json
+    // "lib": ["esnext"],
+    "types": ["node"],
+    // and npm install -D @types/node
+
+    // Other Outputs
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    // Stricter Typechecking Options
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+
+    // Style Options
+    "noImplicitAny": true,
+    // "noImplicitReturns": true,
+    // "noImplicitOverride": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "noFallthroughCasesInSwitch": true,
+    // "noPropertyAccessFromIndexSignature": true,
+
+    // Recommended Options
+    // strict set to true in @tsconfig/node-lts/tsconfig.json
+    // "strict": true,
+    "jsx": "react-jsx",
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    // skipLibCheck set in @tsconfig/node-lts/tsconfig.json
+    // "skipLibCheck": true
+    "erasableSyntaxOnly": true,
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "./dist", "spec"]
+}

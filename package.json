@@ -6,6 +6,7 @@
   "scripts": {
     "build": "npx tsc",
     "start": "nodemon",
+    "prod": "node dist/.",
     "jasmine": "jasmine",
     "test": "npm run build && npm run jasmine",
     "lint": "eslint .",

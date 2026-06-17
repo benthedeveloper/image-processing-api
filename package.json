@@ -7,7 +7,11 @@
     "build": "npx tsc",
     "start": "nodemon",
     "jasmine": "jasmine",
-    "test": "npm run build && npm run jasmine"
+    "test": "npm run build && npm run jasmine",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format:check": "prettier --check \"src/**/*.ts\"",
+    "format:fix": "prettier --write \"src/**/*.ts\""
   },
   "keywords": [],
   "author": "Ben Harrison",
@@ -20,12 +24,19 @@
     "supertest": "^7.2.2"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@tsconfig/node-lts": "^24.0.0",
     "@types/express": "^5.0.6",
     "@types/jasmine": "^6.0.0",
     "@types/node": "^25.9.3",
     "@types/supertest": "^7.2.0",
+    "eslint": "^10.5.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.6.0",
+    "jiti": "^2.7.0",
     "nodemon": "^3.1.14",
-    "typescript": "^6.0.3"
+    "prettier": "^3.8.4",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.61.1"
   }
 }

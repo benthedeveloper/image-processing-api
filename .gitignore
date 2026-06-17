@@ -2,6 +2,9 @@
 node_modules/
 jspm_packages/
 
+# Compiled code
+dist/
+
 # Environment variables (Crucial for API security)
 .env
 .env.local

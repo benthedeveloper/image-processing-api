@@ -1,14 +1,7 @@
-import {
-  DisplayProcessor,
-  SpecReporter,
-  StacktraceOption,
-} from 'jasmine-spec-reporter';
+import { DisplayProcessor, SpecReporter, StacktraceOption } from 'jasmine-spec-reporter';
 
 class CustomProcessor extends DisplayProcessor {
-  public displayJasmineStarted(
-    info: jasmine.JasmineStartedInfo,
-    log: string,
-  ): string {
+  public displayJasmineStarted(info: jasmine.JasmineStartedInfo, log: string): string {
     return `TypeScript ${log}`;
   }
 }

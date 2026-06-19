@@ -1,6 +1,6 @@
 import { type Request, type Response, Router } from 'express';
 import type { ImageQuery } from '../../types/image-query.ts';
-import { processImage } from '../../image-processor.ts';
+import { imageProcessor } from '../../image-processor.ts';
 
 const images = Router();
 
@@ -39,13 +39,11 @@ images.get('/', async (req: Request<unknown, unknown, unknown, ImageQuery>, res:
   }
 
   try {
-    console.log('HANDLER: calling processImage with', validatedQuery);
-    const result = await processImage(validatedQuery);
+    const result = await imageProcessor.processImage(validatedQuery);
     // TODO choose a sensible content-type (use actual format detection later)
     res.type('image/jpeg');
     return res.status(200).send(result);
   } catch (err: unknown) {
-    console.log('HANDLER: processImage threw', err);
     const e = err instanceof Error ? err : new Error(String(err));
     // If processor throws a not-found error, detect it here
     if (e.message.includes('not found') || e.message.includes('No such file')) {

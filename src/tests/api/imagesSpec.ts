@@ -3,8 +3,23 @@ import request from 'supertest';
 import images from '../../routes/api/images.ts';
 import { imageProcessor } from '../../image-processor.ts';
 
-type ImageQuery = { filename: string; width?: number; height?: number };
-type ProcessImageFn = (q: ImageQuery) => Promise<Buffer>;
+let processImageSpy: jasmine.Spy | undefined;
+
+// Stub the processImage function to return a resolved promise with a buffer
+function stubProcessImageResolve(buffer: Buffer): jasmine.Spy {
+  processImageSpy = spyOn(imageProcessor, 'processImage' as keyof typeof imageProcessor).and.returnValue(
+    Promise.resolve(buffer) as Promise<Buffer>,
+  );
+  return processImageSpy;
+}
+
+// Stub the processImage function to return a rejected promise with an error
+function stubProcessImageReject(err: Error): jasmine.Spy {
+  processImageSpy = spyOn(imageProcessor, 'processImage' as keyof typeof imageProcessor).and.callFake(() => {
+    return Promise.reject(err) as Promise<Buffer>;
+  });
+  return processImageSpy;
+}
 
 describe('GET /api/images (unit)', () => {
   let app: express.Express;
@@ -14,10 +29,16 @@ describe('GET /api/images (unit)', () => {
     app.use('/api/images', images);
   });
 
-  // afterEach(() => {
-  //   // reset any jasmine spies created in tests
-  //   // each spy variable is local to the test, so nothing global to restore here
-  // });
+  afterEach(() => {
+    // Reset the spy after each test to avoid interference between tests
+    if (processImageSpy) {
+      processImageSpy.calls.reset();
+      if (processImageSpy.and?.callThrough) {
+        processImageSpy.and.callThrough();
+      }
+      processImageSpy = undefined;
+    }
+  });
 
   it('returns 400 if filename is missing', async () => {
     const res = await request(app).get('/api/images');
@@ -32,44 +53,35 @@ describe('GET /api/images (unit)', () => {
   });
 
   it('does not call processImage for invalid queries', async () => {
-    const spy = spyOn(imageProcessor, 'processImage').and.returnValue(
-      Promise.resolve(Buffer.from('ok')) as ReturnType<ProcessImageFn>,
-    );
+    stubProcessImageResolve(Buffer.from('ok'));
     const res = await request(app).get('/api/images').query({ width: '100' }); // missing filename
-    expect(spy).not.toHaveBeenCalled();
+    expect(processImageSpy).not.toHaveBeenCalled();
     expect(res.status).toBe(400);
-    spy.calls.reset();
   });
 
   it('calls processImage with parsed width/height and returns buffer + content-type', async () => {
     const fakeBuffer = Buffer.from([1, 2, 3]);
-    const spy = spyOn(imageProcessor, 'processImage').and.returnValue(
-      Promise.resolve(fakeBuffer) as ReturnType<ProcessImageFn>,
-    );
+    stubProcessImageResolve(fakeBuffer);
 
     const res = await request(app)
       .get('/api/images')
       .query({ filename: 'encenadaport', width: '100', height: '200' })
       .buffer(true);
 
-    expect(spy).toHaveBeenCalledWith({ filename: 'encenadaport', width: 100, height: 200 });
+    expect(processImageSpy).toHaveBeenCalledWith({ filename: 'encenadaport', width: 100, height: 200 });
     expect(res.status).toBe(200);
     expect(res.headers['content-type']).toBeDefined();
     const body = res.body as Buffer;
     expect(body.length).toBeGreaterThan(0);
-    spy.calls.reset();
   });
 
   it('returns 500 when processImage rejects', async () => {
-    const spy = spyOn(imageProcessor, 'processImage').and.returnValue(
-      Promise.reject(new Error('processing failed')) as ReturnType<ProcessImageFn>,
-    );
+    stubProcessImageReject(new Error('processing failed'));
 
-    const res = await request(app).get('/api/images').query({ filename: 'encenadaport' });
+    const res = await request(app).get('/api/images').query({ filename: 'non-existent-file' });
 
-    expect(spy).toHaveBeenCalled();
+    expect(processImageSpy).toHaveBeenCalled();
     expect(res.status).toBe(500);
     expect(res.body?.error).toBeDefined();
-    spy.calls.reset();
   });
 });

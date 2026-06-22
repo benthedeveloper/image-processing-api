@@ -39,10 +39,8 @@ images.get('/', async (req: Request<unknown, unknown, unknown, ImageQuery>, res:
   }
 
   try {
-    const result = await imageProcessor.processImage(validatedQuery);
-    // TODO choose a sensible content-type (use actual format detection later)
-    res.type('image/jpeg');
-    return res.status(200).send(result);
+    const thumbPath = await imageProcessor.processImage(validatedQuery);
+    return res.sendFile(thumbPath);
   } catch (err: unknown) {
     const e = err instanceof Error ? err : new Error(String(err));
     // If processor throws a not-found error, detect it here

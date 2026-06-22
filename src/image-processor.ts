@@ -3,9 +3,10 @@ import path from 'path';
 import sharp from 'sharp';
 import type { ImageQuery } from './types/image-query.ts';
 
-const FULL_DIR = path.join(process.cwd(), 'assets', 'full');
-const THUMB_DIR = path.join(process.cwd(), 'assets', 'thumbs');
-const SUPPORTED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.svg', '.heif', '.tiff'];
+const ASSETS_ROOT = path.join(process.cwd(), 'assets');
+export const FULL_DIR = path.join(ASSETS_ROOT, 'full');
+export const THUMB_DIR = path.join(ASSETS_ROOT, 'thumbs');
+export const SUPPORTED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.svg', '.heif', '.tiff'];
 
 export const imageProcessor = {
   getFullImageAssetPath: async (filename: string): Promise<string | null> => {

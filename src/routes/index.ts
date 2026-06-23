@@ -3,8 +3,12 @@ import images from './api/images.ts';
 
 const routes = express.Router();
 
-routes.get('/', (req, res) => {
+routes.get('/', (_req, res) => {
   res.send('Main api route');
+});
+
+routes.get('/health', (_req, res) => {
+  res.sendStatus(200);
 });
 
 routes.use('/images', images);

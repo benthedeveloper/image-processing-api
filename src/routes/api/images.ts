@@ -4,6 +4,19 @@ import { imageProcessor } from '../../image-processor.ts';
 
 const images = Router();
 
+/**
+ * GET /api/images
+ * Query Parameters:
+ * - filename: string (required)
+ * - width: number (optional)
+ * - height: number (optional)
+ *
+ * Returns the processed image file or an error message.
+ * Validates query parameters and handles errors appropriately.
+ * If the image is not found, returns a 404 status with an error message.
+ * If processing fails, returns a 500 status with an error message.
+ * If parameters are invalid, returns a 400 status with an error message.
+ */
 images.get('/', async (req: Request<unknown, unknown, unknown, ImageQuery>, res: Response) => {
   const { filename, width, height } = req.query;
 

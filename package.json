@@ -12,8 +12,8 @@
     "test": "npm run build && npm run jasmine",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format:check": "prettier --check \"src/**/*.ts\"",
-    "format:fix": "prettier --write \"src/**/*.ts\""
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\""
   },
   "keywords": [],
   "author": "Ben Harrison",
